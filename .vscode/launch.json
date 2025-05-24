@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run C++ With I/O",
+      "type": "cppdbg",
+      "request": "launch",
+
+      // invoke bash to do the redirection
+      "program": "/usr/bin/bash",
+      "args": [
+        "-c",
+        "${fileDirname}/${fileBasenameNoExtension} < ${workspaceFolder}/input.txt > ${workspaceFolder}/output.txt"
+      ],
+
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build",
+
+      // don't pop up an external console
+      "externalConsole": false,
+      // and never auto-reveal the Debug Console
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}
