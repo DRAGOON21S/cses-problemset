@@ -11,6 +11,7 @@ void count(int arr[], int size){
             continue;
             // cout << "hello";
         }
+        
 
         // cout << "hello";
         int count =1;
