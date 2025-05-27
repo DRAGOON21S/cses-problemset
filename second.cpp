@@ -95,14 +95,100 @@ void move_zero_to_end(int arr[],int size){
 void move_zero_using_pointers(int arr[],int size){
     int i = 0;
     for(int j=0;j<size;j++){
-        
+        if(arr[j]==0)
+        continue;
+        if(i!=j)
+        swap(arr[i],arr[j]);
+        i++;
+    }
+    printarr(arr,size);
+}
+
+void temp_arr_pointers(int arr1[],int size1, int arr2[],int size2){
+    vector<int> temp;
+    for(int i=0,j = 0; i<size1 || j<size2;){
+        if(arr1[i]==arr2[j]){
+            if(temp.size() == 0 || temp.back() != arr1[i])
+            temp.push_back(arr1[i]);
+            i++;
+            j++;
+        }
+        if(arr1[i]>arr2[j]){
+            if(temp.size() == 0 || temp.back() != arr1[j])
+            temp.push_back(arr2[j]);
+            j++;
+            
+        }
+        if (arr1[i]<arr2[j]){
+            if(temp.size() == 0 || temp.back() != arr1[i])
+            temp.push_back(arr1[i]);
+            i++;
+        }
+    }
+    for(auto x:temp){
+        cout<<x;
+    }
+}
+
+void union_ordered_map(int arr1[],int size1, int arr2[],int size2){
+    map <int,int> freq;
+    vector<int> temp;
+    for(int i=0;i<size1;i++)
+        freq[arr1[i]]++;
+    for(int i=0;i<size2;i++)
+        freq[arr2[i]]++;
+    for (auto & it: freq)
+        temp.push_back(it.first);
+    for(auto x:temp)
+        cout<<x;
+    
+}
+
+void missing_number_with_xor(int arr[], int n){
+    int xor1=0,xor2=0;
+    for(int i=0;i<n-1;i++){
+        xor1 = xor1^arr[i];
+        xor2 = xor2 ^(i+1);
+    }
+    xor2 ^= n^xor1;
+    // int r = xor2^xor1;
+    cout << xor2;
+}
+
+void sum_subarray(int arr[], int size, int n){
+    int sum = 0;
+    int k =0;
+    int start=-1,end=-1;
+    for(int i=0;i<size;i++){
+        sum = 0;
+        for(int j=i;j<size;j++){
+            sum += arr[j];
+            // cout << sum<<endl;
+            if(sum == n){
+                if(k<(j-i+1))
+            {    k=j-i+1;
+                start = i;
+                end = j;}
+            }
+            if (sum > n){
+                break;
+            }
+        }
+    }
+    // cout << k <<" "<<start<<" "<< end;
+    while(start<=end){
+        cout << arr[start];
+        start++;
     }
 }
 
 int main(){
-    int arr []={0,0,0,0,1,2,3,4,0,0,0,0,5,6,7,0,0,0,0};
-    cout<<sizeof(arr)/sizeof(int)<<endl<<endl;
-    move_zero_to_end(arr,sizeof(arr)/sizeof(int));
+    int arr []={2,3,5,1,9};
+    int arr2 []={1,2,3,5,6,7,8,9};
+    sum_subarray(arr,sizeof(arr)/sizeof(int),9);
+    // temp_arr_pointers(arr,sizeof(arr)/sizeof(int), arr2,sizeof(arr2)/sizeof(int));
+    // cout<<sizeof(arr)/sizeof(int)<<endl<<endl;
+    // move_zero_using_pointers(arr,sizeof(arr)/sizeof(int));
     // rotate_left_by_n(arr,sizeof(arr)/sizeof(int),14);
     // remove_duplicates(arr,sizeof(arr)/sizeof(int));
     // cout << status;
