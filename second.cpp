@@ -51,6 +51,11 @@ void printarr(int arr[], int size){
         cout << arr[i] << endl;
 }
 
+void printarr_vector(vector <int> &arr, int size){
+    for (int i = 0; i < size; i++)
+        cout << arr[i] << endl;
+}
+
 void remove_duplicates(int arr[], int size){
     int unique=1;
     for (int i = 0; i<size-1;i++){
@@ -155,6 +160,7 @@ void missing_number_with_xor(int arr[], int n){
     cout << xor2;
 }
 
+//only works for positive arrays
 void sum_subarray(int arr[], int size, int n){
     int sum = 0;
     int k =0;
@@ -182,10 +188,196 @@ void sum_subarray(int arr[], int size, int n){
     }
 }
 
+//works for both negative and positve arrays
+void longestsubarray_hashmap(int arr[], int size, int k){
+    map <int,int> presum;
+    int maxlen=0,sum=0;
+    for(int i=0;i<size;i++){
+        sum+=arr[i];
+        if(sum==k)
+        maxlen = i+1;
+        int rem = sum - k;
+        if(presum.find(rem)!=presum.end()){
+            int len = i - presum[rem];
+            maxlen = max(maxlen,len);
+        }
+        presum[sum]=i;
+    }
+    cout << maxlen <<endl;
+}
+
+void twosumproblem_hash(int arr[],int size, int k){
+    unordered_map <int,int> hashmap;
+    for(int i=0;i<size;i++){
+        hashmap[arr[i]]=i;
+    }
+    for(int i=0;i<size;i++){
+        if (hashmap[k-arr[i]]){
+            cout<<i << " "<<hashmap[k-arr[i]]<<endl;
+            return;
+        }
+    }
+}
+
+void twosum_twopointers_greedy(vector<int> &arr,int size,int k){
+    sort(arr.begin(),arr.end());
+    int left = 0, right =size-1;
+    int sum=0;
+    while(left<right){
+        sum = arr[left]+arr[right];
+        if(sum==k){
+            cout << left << right;
+            return;
+        }
+        else if (sum < k)   
+            left++;
+        else
+            right--;
+
+    }
+
+}
+
+void zero_one_twos(vector<int> &arr, int size){
+    int low=0,mid=0,high=size-1;
+    for(; mid<=high;){
+        // while(arr[i]==2){
+        //     swap(arr[high],arr[i]);
+        //     high --;
+        // }
+        if(arr[mid]==0){
+            swap(arr[low],arr[mid]);
+            low++;
+            mid++;
+        }
+        else if(arr[mid]==1){
+            mid++;
+        }
+        else {
+            swap(arr[high],arr[mid]);
+            high --;
+        }
+        cout<<low<<" "<<mid<<" "<<high<< " "<<endl;
+    }
+    printarr_vector(arr,size);
+    // for(int i=0;i<size;i++){
+    //     cout<<low<<" "<<mid<<" "<<high<<endl;
+    //     if(arr[i]==0)
+    //         low=i;
+    //     if(arr[i]==1)
+    //         mid=i;
+    //     if(arr[i]==2)
+    //         high=i;
+    //     cout<<low<<" "<<mid<<" "<<high<<endl;
+    //     while(high<low)
+    //         if (high<low){
+    //             swap(arr[high],arr[low]);
+    //             swap(high,low);
+    //         }
+    //     while(mid<low)
+    //         if (mid<low){
+    //             swap(arr[mid],arr[low]);
+    //             swap(mid,low);
+    //         }
+    //     while(high<mid)
+    //         if (high<mid){
+    //             swap(arr[high],arr[mid]);
+    //             swap(high,mid);
+    //         }
+        // while(low>high||low>mid||mid>high){
+        //     if (high<low){
+        //         swap(arr[high],arr[low]);
+        //         swap(high,low);
+        //     }
+        //     if (mid<low){
+        //         swap(arr[mid],arr[low]);
+        //         swap(mid,low);
+        //     }
+        //     if(high<mid){
+        //         swap(arr[high],arr[mid]);
+        //         swap(high,mid);
+        //     }
+        // }
+        // while(mid>high){
+        //     if(high<mid){
+        //         swap(arr[high],arr[mid]);
+        //         swap(high,mid);
+        //     }
+        // }
+        // cout<<low<<" "<<mid<<" "<<high<<endl<<endl;
+
+    // }
+
+    // printarr_vector(arr,size);
+}
+
+void boyer_moore(vector<int> &arr, int size){
+    int count=0, element=arr[0];
+    for(int i = 0; i<size;i++){
+        if(arr[i]==element){
+            count++;
+        }
+        else {
+            if(count>0){
+                count --;
+            }
+            else{
+                count++;
+                element=arr[i];
+            }
+        }
+    }
+    cout << element;
+}
+
+bool bin_search(vector<int>& nums, int target) {
+    int low=0, high=nums.size()-1;
+    int i=0;
+    int mid = 0;
+    while(low<=high&&i<100){
+        mid  = (high+low)/2;
+        if(nums[mid]==target){
+            // cout << mid << " ";
+            return true;}
+        if (nums[low] == nums[mid] && nums[mid] == nums[high]) {
+            low = low + 1;
+            high = high - 1;
+            continue;
+        }
+        if(nums[low]<=nums[mid]){   
+            if (nums[low]<=target && target<nums[mid]){
+                high = mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        else{
+            if (nums[mid]<target && target<=nums[high]){
+                low=mid+1;
+            }
+            else{
+                high=mid-1;
+            }
+        }
+        i++;
+        // cout << low << " "<<high<<endl;
+    }
+    // cout << mid << " ";
+    // cout << i <<" "<<high<<" ";
+    return false;
+}
+
 int main(){
-    int arr []={2,3,5,1,9};
-    int arr2 []={1,2,3,5,6,7,8,9};
-    sum_subarray(arr,sizeof(arr)/sizeof(int),9);
+    int arr []={2,3,5,1,2,2,2,2,2,-2,-2,-12,12,2,2,2,9};
+    vector<int> arr2 ={3,1};
+    cout<<bin_search(arr2,1);
+    // boyer_moore(arr2,10);
+    // zero_one_twos(arr2,10);
+    // twosum_twopointers_greedy(arr2,8,7);
+    // twosumproblem_hash(arr2,sizeof(arr)/sizeof(int),15);
+    // longestsubarray_hashmap(arr,sizeof(arr)/sizeof(int),9);
+    // sum_subarray(arr,sizeof(arr)/sizeof(int),9);
     // temp_arr_pointers(arr,sizeof(arr)/sizeof(int), arr2,sizeof(arr2)/sizeof(int));
     // cout<<sizeof(arr)/sizeof(int)<<endl<<endl;
     // move_zero_using_pointers(arr,sizeof(arr)/sizeof(int));
