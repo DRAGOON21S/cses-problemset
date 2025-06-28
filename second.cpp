@@ -368,10 +368,62 @@ bool bin_search(vector<int>& nums, int target) {
     return false;
 }
 
+void min_in_rotate(vector<int>& nums){
+    int low=0, high=nums.size()-1;
+    int ans = INT16_MAX;
+    int i = 0;
+    while(low<=high && i < 100){
+        int mid = (high+low)/2;
+        if (ans > nums[mid])
+            ans = nums[mid];
+        if (nums[low]<=nums[mid]){
+            if (ans > nums[low])
+                ans = nums[low];
+            low = mid + 1;
+        }
+        if (nums[mid]<=nums[high])
+            high=mid-1;
+        i++;
+        cout << i<<endl;
+    }
+    cout << "ans is "<<ans;
+}
+
+void singleNonDuplicate(vector<int>& nums){
+    int low=0, high=nums.size()-1;
+    int i = 0;
+    // cout << high <<endl;
+    while(low<=high && i < 100){
+        int mid = (high+low)/2;
+        if(high==low){
+            cout <<"ans is "<< nums[mid];
+            return;
+        }
+        if(nums[mid-1]==nums[mid]){
+            if((mid-1-low)%2==0)
+                low=mid+1;
+            else
+                high=mid-2;
+        }
+        else if(nums[mid]==nums[mid+1]){
+            
+            if((high-(mid+1))%2==0)
+                high=mid-1;
+            else
+                low=mid+2;
+        }
+        else{
+            cout << nums[mid];
+            return;}
+    }
+}
+
 int main(){
     int arr []={2,3,5,1,2,2,2,2,2,-2,-2,-12,12,2,2,2,9};
-    vector<int> arr2 ={3,1};
-    cout<<bin_search(arr2,1);
+    vector<int> arr2 ={1,1,2,2,3,3,4,5,5,6,6};
+    singleNonDuplicate(arr2);
+    // min_in_rotate(arr2);
+    // cout<<bin_search(arr2,1);
     // boyer_moore(arr2,10);
     // zero_one_twos(arr2,10);
     // twosum_twopointers_greedy(arr2,8,7);
